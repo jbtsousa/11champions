@@ -51,11 +51,12 @@ html{
 /* colors */
 :root {
     --color-darkblue: #020532;
-    --color-lightblue: #b3c7d6;
+    --color-lightblue: #f1f9fd;
 }
+
 navbar{
     background-color: var(--color-lightblue);
-    padding: 4vh 2vw;
+    padding: 2vh 2vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -71,10 +72,10 @@ h1{
 
 }
 navbar h1{
-    color: var(--color-darkblue);;
+    color: var(--color-darkblue);
 }
 navbar ul{
-    color: var(--color-darkblue);;
+    color: var(--color-darkblue);
     font-weight: bold;
     display: flex;
     justify-content: flex-end;
@@ -84,7 +85,7 @@ navbar li{
 }
 navbar li:hover{
     cursor: pointer;
-    color: white;
+    color: #808080;
 }
 main{
     padding: 4vh 2vw;

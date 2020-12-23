@@ -140,8 +140,8 @@ $golo_jogad = pg_query($conn,"select jogador.nome from  jogador, golo where joga
                     <form method="get" action="admin-add-jogo.php">
                         <h2>Adicionar novo Jogo</h2>
                         Data: <input name="new_date" type="date" /> <br />
-                        ID Equipa 1:<input name="new_eq1" type="date" /> <br />
-                        ID Equipa 2:<input name="new_eq2" type="date" /> <br />
+                        ID Equipa 1:<input name="new_eq1" type="number" /> <br />
+                        ID Equipa 2:<input name="new_eq2" type="number" /> <br />
                         Resultado (equipa1-equipa2): <input name="new_resultado" type="text" /> <br />
                         Jornada: <input name="new_jornada" type="number" /> <br />
                         <input type="submit" value="Adicionar" />

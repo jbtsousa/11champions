@@ -1,4 +1,32 @@
+body{
+    line-height: 120%;
+}
+#calend{
+    display: flex;
+    justify-content: space-between;
+}
 .jogo{
     color:white;
+}
+div{
+    margin-bottom: 1%;
+}
+.calend-cont{
+    width:45%;
+    display: block;
+    background-color: var(--color-lightblue);
+    color: #020532;
+    border-radius: 12px;
+    padding: 2%;
+}
 
+.calend-cont h2{
+    font-weight: bold;
+    font-size: 1.2em;
+
+}
+.calend-cont h3{
+    font-weight: bold;
+    padding-bottom: 0;
+    padding-top: 3%;
 }

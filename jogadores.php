@@ -37,9 +37,8 @@
     <ul>
         <a href="jogadores.php"> <li>JOGADORES</li> </a>
         <a href="equipas.php"> <li>EQUIPAS</li> </a>
-        <a href="classif.html"> <li>CLASSIFICAÇÕES</li> </a>
+        <a href="classif.php"> <li>CLASSIFICAÇÕES</li> </a>
         <a href="calendario.php"> <li>CALENDÁRIO</li> </a>
-        <li><input type="text" placeholder="Search.."></li>
     </ul>
 </navbar>
 <main>
