@@ -1,0 +1,68 @@
+       /* LOGIN*/
+
+.center{
+    width: 100vw;
+    height: 100vh;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.form{
+    border-radius: 8px;
+    background-color: #ffffff;
+    padding: 4%;
+    color:#020532 ;
+}
+label{
+    display: flex;
+    justify-content: space-between;
+}
+p{
+    color:#020532;
+}
+
+/*  ADMIN PAGE  */
+body{
+    line-height: 120%;
+}
+.tabela{
+    margin-top: 4%;
+    display: flex;
+}
+.tabela h2{
+    margin-bottom: 1%;
+    font-weight: 600;
+}
+.cabecalho{
+    display: flex;
+    width: 100%;
+}
+.cabecalho img{
+    height: 16px;
+    padding-right: 1%;
+    cursor: pointer;
+}
+
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 10px;
+}
+th{
+    font-weight: bold;
+}
+.cont{
+    display: flex;
+}
+.see, .add{
+    width: 50%;
+}
+.add{
+    margin-top: 1%;
+}
+
+
+
+
+

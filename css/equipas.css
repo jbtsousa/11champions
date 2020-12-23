@@ -1,0 +1,16 @@
+#equipas p {
+    font-size: 1.3em;
+}
+.equipa p{
+    margin-bottom: 2%;
+
+}
+body{
+    line-height: 120%;
+}
+.grid{
+    margin-top: 1%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 25px;
+}
