@@ -34,50 +34,84 @@ $numjogos = pg_affected_rows($result_jog);
 <main>
     <div id="calend">
 
-        <div class="calend-cont">
 
-            <h2>JOGOS PASSADOS</h2>
 
                 <?php
-                //ver o numero total de jornadas
-                $total_jornadas=pg_query($conn,"SELECT MAX( jornada ) AS max FROM jogos") or die;
-                $row = pg_fetch_array( $total_jornadas );
-                $tot = $row['max'];
                 $equipa1 = pg_query($conn,"select equipa.nome from equipa, jogos where equipa.id=jogos.equipa_id; ") or die;
                 $equipa2 = pg_query($conn,"select equipa.nome from equipa, jogos where equipa.id=jogos.equipa_id1; ") or die;
-                //corre todos as jornadas
-                 for($j=1; $j<$tot+1;$j++){
-                        $jornada_pas=$result_jornadap= pg_query($conn,"select * from jogos where data<'2020-12-23'") or die;
-                        $num_passadas=pg_affected_rows($jornada_pas);
+?>
 
+        <div id="passados">
+            <h2>JOGOS PASSADOS</h2>
 
-                         $result_jornadap= pg_query($conn,"select * from jogos where jornada='$j'") or die;
+            <?php
+                $result_jornadap= pg_query($conn,"select * from jogos where data<'2020-12-23'order by data,jornada") or die;
+                $nump=pg_affected_rows($result_jornadap);
 
-                        $num=pg_affected_rows($result_jornadap);
+            for ($i=0; $i<$nump; $i++){
 
+                    $row_jornadap=pg_fetch_assoc($result_jornadap);
+                    $eq_1=pg_fetch_assoc($equipa1);
+                    $eq_2=pg_fetch_assoc($equipa2);
+                    $j=$i+1;
+
+                   if ($i % 4 == 0){
+                        echo "<h3>" . "Jornada " . $row_jornadap['jornada'] . "</h3>";}
                         echo
-                                "<h3>"."Jornada ". $j."</h3>";
-                            for ($i=0; $i<$num; $i++) {
-                                $row_jornada=pg_fetch_assoc($result_jornadap);
-                                $eq_1=pg_fetch_assoc($equipa1);
-                                $eq_2=pg_fetch_assoc($equipa2);
-                            echo
-                                "<br/>".$row_jornada['data']."<br/>"
-                                .$eq_1['nome']." ".$row_jornada['resultado']." ".$eq_2['nome'] . "<br/>";
-                    }
+                        "<br/>".$row_jornadap['data']."<br/>"
+                        .$eq_1['nome']." ".$row_jornadap['resultado']." ".$eq_2['nome'] . "<br/>";
                 }
-                ?>
+            ?>
 
         </div>
 
-        <div class="calend-cont">
+        <div id="futuros"">
             <h2>JOGOS FUTUROS</h2>
+        <?php
+        $result_jornadaf= pg_query($conn,"select * from jogos where data>='2020-12-23'order by data,jornada") or die;
+        $numf=pg_affected_rows($result_jornadaf);
 
+        for ($i=0; $i<$numf; $i++){
+            $row_jornadaf=pg_fetch_assoc($result_jornadaf);
+            $eq_1=pg_fetch_assoc($equipa1);
+            $eq_2=pg_fetch_assoc($equipa2);
+            if ($i%4 ==0){
+                echo "<h3>" . "Jornada " . $row_jornadaf['jornada'] . "</h3>";}
 
+            echo
+                "<br/>".$row_jornadaf['data']."<br/>"
+                .$eq_1['nome']." ".$row_jornadaf['resultado']." ".$eq_2['nome'] . "<br/>";
+        }
+
+        ?>
         </div>
+
 
     </div>
 </main>
 
 </body>
 </html>
+
+<?php
+//ver o numero total de jornadas
+$total_jornadas=pg_query($conn,"SELECT MAX( jornada ) AS max FROM jogos") or die;
+$row = pg_fetch_array( $total_jornadas );
+$tot = $row['max'];
+
+//corre todos as jornadas
+for($j=1; $j<$tot+1;$j++){
+    $result_jornada= pg_query($conn,"select * from jogos where jornada='$j'") or die;
+    $num=pg_affected_rows($result_jornada);
+    echo "<br/>"."Jornada". $j;
+    for ($i=0; $i<$num; $i++) {
+        $row_jornada=pg_fetch_assoc($result_jornada);
+        echo
+            "<br/>".'Data'.$row_jornada['data']."<br/>"
+            .' Resultado:'.$row_jornada['resultado'] . "<br/>"
+            . "</div>";
+
+    }
+}
+pg_close($conn);
+?>

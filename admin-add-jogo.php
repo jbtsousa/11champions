@@ -12,6 +12,7 @@
     $result = pg_query($conn, "insert into jogos (data, resultado, jornada, equipa_id, equipa_id1) 
     values ('$ndata','$nresultado','$njornada','$neq1','$neq2')") or die;
     $result2 = pg_query($conn, "select * from equipa") or die;
+    header("location: admin.php");
 
 
 ?>

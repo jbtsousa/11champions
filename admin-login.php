@@ -36,10 +36,10 @@
         //se algum corresponder ao query a count será 1
         if($count ==1) {
          header("location: admin.php");
-            echo "<p>certo</p>";
       }
         else {
-            echo "<p>errado</p>";
+
+            echo "<h2>Credenciais erradas</h2>";
       }
    }
     pg_close($conn);

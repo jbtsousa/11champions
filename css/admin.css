@@ -22,12 +22,21 @@ p{
 }
 
 /*  ADMIN PAGE  */
+
+
+       main  h1{
+           line-height: 120%;
+       }
 body{
     line-height: 120%;
+}
+navbar a:hover{
+    text-decoration: underline;
 }
 .tabela{
     margin-top: 4%;
     display: flex;
+    justify-content: flex-start;
 }
 .tabela h2{
     margin-bottom: 1%;
@@ -55,11 +64,20 @@ th{
 .cont{
     display: flex;
 }
-.see, .add{
-    width: 50%;
+.see, .add, . edit{
+    width: 40%;
 }
+
 .add{
     margin-top: 1%;
+
+}
+.edit{
+    margin-top: 20%;
+}
+.right{
+    margin-left:15vw;
+
 }
 
 
