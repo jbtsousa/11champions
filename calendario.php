@@ -28,24 +28,20 @@ $result_jog = pg_query($conn,"select * from jogos") or die;
 $numjogos = pg_affected_rows($result_jog);
 
 
-
 ?>
 
 <main>
     <div id="calend">
-
-
-
                 <?php
-                $equipa1 = pg_query($conn,"select equipa.nome from equipa, jogos where equipa.id=jogos.equipa_id; ") or die;
-                $equipa2 = pg_query($conn,"select equipa.nome from equipa, jogos where equipa.id=jogos.equipa_id1; ") or die;
+                $equipa1 = pg_query($conn,"select equipa.nome from equipa, jogos where equipa.id=jogos.equipa1_id; ") or die;
+                $equipa2 = pg_query($conn,"select equipa.nome from equipa, jogos where equipa.id=jogos.equipa2_id; ") or die;
 ?>
 
         <div id="passados">
             <h2>JOGOS PASSADOS</h2>
 
             <?php
-                $result_jornadap= pg_query($conn,"select * from jogos where data<'2020-12-23'order by data,jornada") or die;
+                $result_jornadap= pg_query($conn,"select * from jogos where data<'2020-12-23'order by data") or die;
                 $nump=pg_affected_rows($result_jornadap);
 
             for ($i=0; $i<$nump; $i++){
@@ -58,8 +54,10 @@ $numjogos = pg_affected_rows($result_jog);
                    if ($i % 4 == 0){
                         echo "<h3>" . "Jornada " . $row_jornadap['jornada'] . "</h3>";}
                         echo
+                        "<div class='game'>".
                         "<br/>".$row_jornadap['data']."<br/>"
-                        .$eq_1['nome']." ".$row_jornadap['resultado']." ".$eq_2['nome'] . "<br/>";
+                        .$eq_1['nome']." ". $row_jornadap['equipa1_golos'] ."-". $row_jornadap['equipa2_golos'] ." ".$eq_2['nome'] . "<br/>".
+                        "</div>";
                 }
             ?>
 
@@ -68,7 +66,7 @@ $numjogos = pg_affected_rows($result_jog);
         <div id="futuros"">
             <h2>JOGOS FUTUROS</h2>
         <?php
-        $result_jornadaf= pg_query($conn,"select * from jogos where data>='2020-12-23'order by data,jornada") or die;
+        $result_jornadaf= pg_query($conn,"select * from jogos where data>='2020-12-23'order by data") or die;
         $numf=pg_affected_rows($result_jornadaf);
 
         for ($i=0; $i<$numf; $i++){
@@ -79,8 +77,10 @@ $numjogos = pg_affected_rows($result_jog);
                 echo "<h3>" . "Jornada " . $row_jornadaf['jornada'] . "</h3>";}
 
             echo
+                "<div class='game'>".
                 "<br/>".$row_jornadaf['data']."<br/>"
-                .$eq_1['nome']." ".$row_jornadaf['resultado']." ".$eq_2['nome'] . "<br/>";
+                .$eq_1['nome']." ". $row_jornadaf['equipa1_golos'] ."-". $row_jornadaf['equipa2_golos'] ." ".$eq_2['nome'] . "<br/>".
+                "</div>";
         }
 
         ?>
@@ -92,26 +92,3 @@ $numjogos = pg_affected_rows($result_jog);
 
 </body>
 </html>
-
-<?php
-//ver o numero total de jornadas
-$total_jornadas=pg_query($conn,"SELECT MAX( jornada ) AS max FROM jogos") or die;
-$row = pg_fetch_array( $total_jornadas );
-$tot = $row['max'];
-
-//corre todos as jornadas
-for($j=1; $j<$tot+1;$j++){
-    $result_jornada= pg_query($conn,"select * from jogos where jornada='$j'") or die;
-    $num=pg_affected_rows($result_jornada);
-    echo "<br/>"."Jornada". $j;
-    for ($i=0; $i<$num; $i++) {
-        $row_jornada=pg_fetch_assoc($result_jornada);
-        echo
-            "<br/>".'Data'.$row_jornada['data']."<br/>"
-            .' Resultado:'.$row_jornada['resultado'] . "<br/>"
-            . "</div>";
-
-    }
-}
-pg_close($conn);
-?>

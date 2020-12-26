@@ -12,7 +12,7 @@
 
 <navbar>
 
-    <img src="css/images/logo.svg">
+    <a href="index.php"><img src="css/images/logo.svg"></a>
 
     <div class="right">
         <a href='logout.php'><h3>LOGOUT</h3></a>
@@ -37,13 +37,13 @@ $result_equipas = pg_query($conn, "select * from equipa") or die;
 $numequipas = pg_affected_rows($result_equipas);
 //jogos
 $result_jogos = pg_query($conn, "select * from jogos order by data") or die;
-$equipa1 = pg_query($conn, "select equipa.nome from equipa, jogos where equipa.id=jogos.equipa_id; ") or die;
-$equipa2 = pg_query($conn, "select equipa.nome from equipa, jogos where equipa.id=jogos.equipa_id1; ") or die;
+$equipa1 = pg_query($conn, "select equipa.nome from equipa, jogos where equipa.id=jogos.equipa1_id; ") or die;
+$equipa2 = pg_query($conn, "select equipa.nome from equipa, jogos where equipa.id=jogos.equipa2_id; ") or die;
 $numjogos = pg_affected_rows($result_jogos);
 //golos
-$result_golo = pg_query($conn, "select * from golo") or die;
+$result_golo = pg_query($conn, "select * from golo order by jogo_id") or die;
 $numgolos = pg_affected_rows($result_golo);
-$golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jogador.id=golo.jogador_id; ") or die;
+$golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jogador.id=golo.jogador_id ") or die;
 
 ?>
 
@@ -85,7 +85,8 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
                     <tr>
                         <th>ID</th>
                         <th>Equipas</th>
-
+                        <th>Nº Jogos <br/> efectuados</th>
+                        <th>Pontuação</th>
                     </tr>
                     <?php
                     for ($i = 0; $i < $numequipas; $i++) {
@@ -93,6 +94,8 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
                         echo "<tr>" .
                             "<td>" . $row_e['id'] . "</td>" .
                             "<td>" . $row_e['nome'] . "</td>" .
+                            "<td>" . $row_e['num_jogos_efect'] . "</td>" .
+                            "<td>" . $row_e['pontuacao'] . "</td>" .
                             "</tr>";
                     }
                     ?>
@@ -103,95 +106,6 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
                     <h2>Adicionar nova Equipa</h2>
                     <form method="get" action="admin-add-equipa.php">
                         Nome: <input name="new_nomeeq" type="name"/> <br/>
-                        <input type="submit" value="Adicionar"/>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="tabela">
-            <div class="see">
-                <h2>Jogos</h2>
-                <table class="jogos">
-                    <tr>
-                        <th>ID</th>
-                        <th>Data</th>
-                        <th>Resultado</th>
-                        <th>Jornada</th>
-
-                    </tr>
-                    <?php
-                    for ($i = 0; $i < $numjogos; $i++) {
-                        $row_jg = pg_fetch_assoc($result_jogos);
-                        $equipa_1 = pg_fetch_array($equipa1);
-                        $equipa_2 = pg_fetch_array($equipa2);
-                        echo "<tr>" .
-                            "<td>" . $row_jg['id'] . "</td>" .
-                            "<td>" . $row_jg['data'] . "</td>" .
-                            "<td>" . $equipa_1['nome'] . " " . $row_jg['resultado'] . " " . $equipa_2['nome'] . "</td>" .
-                            "<td>" . $row_jg['jornada'] . "</td>" .
-                            "</tr>";
-                    }
-                    ?>
-                </table>
-            </div>
-            <div class="right">
-                <div class="add">
-                    <form method="get" action="admin-add-jogo.php">
-                        <h2>Adicionar novo Jogo</h2>
-                        Data: <input name="new_date" type="date"/> <br/>
-                        ID Equipa 1:<input name="new_eq1" type="number"/> <br/>
-                        ID Equipa 2:<input name="new_eq2" type="number"/> <br/>
-                        Resultado (equipa1-equipa2): <input name="new_resultado" type="text"/> <br/>
-                        Jornada: <input name="new_jornada" type="number"/> <br/>
-                        <input type="submit" value="Adicionar"/>
-                    </form>
-                </div>
-                <div class="edit">
-                    <form method="get" action="admin-edit-jogo.php">
-                        <h2>Editar Jogo</h2>
-                        ID do Jogo: <input name="id_jogo" type="bumber"/> <br/>
-                        Resultado (equipa1-equipa2): <input name="edit_resultado" type="text"/> <br/>
-                        <input type="submit" value="Adicionar"/>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-        <div class="tabela">
-            <div class="see">
-                <h2>Golos</h2>
-                <table class="golos">
-                    <tr>
-                        <th>ID</th>
-                        <th>Minuto</th>
-                        <th>Jogador</th>
-                        <th>Jogo</th>
-
-                    </tr>
-                    <?php
-                    for ($i = 0; $i < $numgolos; $i++) {
-                        $row_g = pg_fetch_assoc($result_golo);
-                        $g_jogad = pg_fetch_array($golo_jogad);
-                        //$g_equipa = pg_fetch_array($golo_equipa);
-                        echo "<tr>" .
-                            "<td>" . $row_g['id'] . "</td>" .
-                            "<td>" . $row_g['minuto'] . "</td>" .
-                            "<td>" . $g_jogad['nome'] . "</td>" .
-                            "<td>" . $row_g['jogos_id'] . "</td>" .
-                            "</tr>";
-                    }
-                    ?>
-                </table>
-            </div>
-            <div class="right">
-                <div class="add">
-                    <form method="get" action="admin-add-golo.php">
-                        <h2>Adicionar novo Golo</h2>
-                        ID do Jogo: <input name="g_jogoid" type="number"/> <br/>
-                        Jogador: <input name="new_resultado" type="text"/> <br/>
-                        Minuto: <input name="g_minuto" type="date"/> <br/>
                         <input type="submit" value="Adicionar"/>
                     </form>
 
@@ -230,6 +144,99 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
             </div>
 
         </div>
+
+        <div class="tabela">
+            <div class="see">
+                <h2>Jogos</h2>
+                <table class="jogos">
+                    <tr>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Resultado</th>
+                        <th>Jornada</th>
+
+                    </tr>
+                    <?php
+                    for ($i = 0; $i < $numjogos; $i++) {
+                        $row_jg = pg_fetch_assoc($result_jogos);
+                        $equipa_1 = pg_fetch_array($equipa1);
+                        $equipa_2 = pg_fetch_array($equipa2);
+                        echo "<tr>" .
+                            "<td>" . $row_jg['id'] . "</td>" .
+                            "<td>" . $row_jg['data'] . "</td>" .
+                            "<td>" . $equipa_1['nome'] ." ". $row_jg['equipa1_golos'] ."-". $row_jg['equipa2_golos'] ." ". $equipa_2['nome'] . "</td>" .
+                            "<td>" . $row_jg['jornada'] . "</td>" .
+                            "</tr>";
+                    }
+                    ?>
+                </table>
+            </div>
+            <div class="right">
+                <div class="add">
+                    <form method="get" action="admin-add-jogo.php">
+                        <h2>Adicionar novo Jogo</h2>
+                        Data: <input name="new_date" type="date"/> <br/>
+                        ID Equipa 1:<input name="new_eq1" type="number"/> <br/>
+                        ID Equipa 2:<input name="new_eq2" type="number"/> <br/>
+                        Golos Equipa 1: <input name="new_golos1" type="text"/> <br/>
+                        Golos Equipa 2: <input name="new_golos2" type="text"/> <br/>
+                        Jornada: <input name="new_jornada" type="number"/> <br/>
+                        <input type="submit" value="Adicionar"/>
+                    </form>
+                </div>
+                <div class="edit">
+                    <form method="get" action="admin-edit-jogo.php">
+                        <h2>Editar Jogo</h2>
+                        ID do Jogo: <input name="id_jogo" type="bumber"/> <br/>
+                        Golos Equipa 1: <input name="edit_golos1" type="text"/> <br/>
+                        Golos Equipa 2: <input name="edit_golos2" type="text"/> <br/>
+                        <input type="submit" value="Adicionar"/>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="tabela">
+            <div class="see">
+                <h2>Golos</h2>
+                <table class="golos">
+                    <tr>
+                        <th>ID</th>
+                        <th>Minuto</th>
+                        <th>Jogador</th>
+                        <th>Jogo</th>
+
+                    </tr>
+                    <?php
+                    for ($i = 0; $i < $numgolos; $i++) {
+                        $row_g = pg_fetch_assoc($result_golo);
+                        $g_jogador = pg_fetch_array($golo_jogad);
+                        echo "<tr>" .
+                            "<td>" . $row_g['id'] . "</td>" .
+                            "<td>" . $row_g['minuto']."</td>" .
+                           // "<td>" .$g_jogador['nome']. "</td>" .
+                            "<td>" .$row_g['jogador_id']. "</td>" .
+                            "<td>" . $row_g['jogo_id'] . "</td>" .
+                            "</tr>";
+                    }
+                    ?>
+                </table>
+            </div>
+            <div class="right">
+                <div class="add">
+                    <form method="get" action="admin-edit-golo.php">
+                        <h2>Editar Golo</h2>
+                        ID do Golo: <input name="id_golo" type="number"/> <br/>
+                        Jogador: <input name="edit_jogador" type="text"/> <br/>
+                        Minuto: <input name="edit_minuto" type="date"/> <br/>
+                        <input type="submit" value="Adicionar"/>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
 

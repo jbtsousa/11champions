@@ -39,8 +39,9 @@ navbar a:hover{
     justify-content: flex-start;
 }
 .tabela h2{
-    margin-bottom: 1%;
+    margin-bottom: 4%;
     font-weight: 600;
+    font-size: 1.2em;
 }
 .cabecalho{
     display: flex;
