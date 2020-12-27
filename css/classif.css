@@ -12,3 +12,6 @@ td, th {
 th{
     font-weight: bold;
 }
+br{
+    display: none;
+}

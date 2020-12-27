@@ -27,6 +27,7 @@
     $numjog2 = pg_affected_rows($result_jog2);
 
     $numequipa = pg_affected_rows($result_equipa);
+
     ?>
 </div>
 
@@ -49,11 +50,6 @@
 
 
     <div class="escolhe_equipa">
-
-        <!--<div class="but_todos">
-            <button id="but_todos" onclick="mostraTodos()"  type="button">Todos</button>
-        </div>-->
-
         <div class="but_equipas">
         <form method='get' action='jogadores.php'>
             <label  for='equipas'> Escolha uma equipa: <br> </label>
@@ -105,7 +101,7 @@
                         "<div class='jogador'>"
                         ."<img src='css/images/icon.png' >"
                             ."<div class='info_jogador'>"
-                            . $row_j['nome'] . "<br/>"
+                            . "<p>".$row_j['nome'] . "</p>"
                             . $row_j['idade'] . ' anos' . "<br/>"
                             .' Camisola nº' . $row_j['n_camisola'] .  "<br/>"
                             . $row_j['peso'] . 'kg' . "<br/>"
@@ -128,15 +124,21 @@
         <div class="grid">
             <?php
             for ($i=0; $i<$numjog; $i++){
+                //conta golos do jogador
+                $jogador=$i+1;
+                $golos_jogad= pg_query($conn, "SELECT COUNT (id) FROM golo WHERE jogador_id='$jogador';") or die;
+                $num_golos=pg_fetch_array($golos_jogad);
+
                 $row_j=pg_fetch_assoc($result_jog);
                 echo
                     "<div class='jogador'>"
                     ."<img src='css/images/icon.png' >"
                     ."<div class='info_jogador'>"
-                    . $row_j['nome'] . "<br/>"
+                    . "<p>".$row_j['nome'] . "</p>"
                     . $row_j['idade'] . ' anos' . "<br/>"
                     .' Camisola nº' . $row_j['n_camisola'] .  "<br/>"
                     . $row_j['peso'] . 'kg' . "<br/>"
+                    .'Nº Golos: '.$num_golos['count']
                     . "</div>"
                     . "</div>";
             }

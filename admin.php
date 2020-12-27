@@ -41,9 +41,12 @@ $equipa1 = pg_query($conn, "select equipa.nome from equipa, jogos where equipa.i
 $equipa2 = pg_query($conn, "select equipa.nome from equipa, jogos where equipa.id=jogos.equipa2_id; ") or die;
 $numjogos = pg_affected_rows($result_jogos);
 //golos
-$result_golo = pg_query($conn, "select * from golo order by jogo_id") or die;
+// a tabela golo já tem criados todos os golos que acontecem em todos os jogos,
+// mas na pagina admin apenas sao mostrados os que já tem minuto e jogador associado (para nao mostrar erro de acesso a array c valores vazios ao aceder ao nome do jogador)
+//para ver todos os golos (com e sem minuto e jogador associado) basta retirar o where jogador_id is not null do seguinte query
+$result_golo = pg_query($conn, "select * from golo where jogador_id is not null order by id") or die;
 $numgolos = pg_affected_rows($result_golo);
-$golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jogador.id=golo.jogador_id ") or die;
+$golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where jogador.id=golo.jogador_id ") or die;
 
 ?>
 
@@ -86,6 +89,11 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
                         <th>ID</th>
                         <th>Equipas</th>
                         <th>Nº Jogos <br/> efectuados</th>
+                        <th>Vitórias</th>
+                        <th>Derrotas</th>
+                        <th>Empates</th>
+                        <th>Golos</br>Marcados</th>
+                        <th>Golos</br>Sofridos</th>
                         <th>Pontuação</th>
                     </tr>
                     <?php
@@ -96,6 +104,11 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
                             "<td>" . $row_e['nome'] . "</td>" .
                             "<td>" . $row_e['num_jogos_efect'] . "</td>" .
                             "<td>" . $row_e['pontuacao'] . "</td>" .
+                            "<td>" . $row_e['vitorias'] . "</td>" .
+                            "<td>" . $row_e['derrotas'] . "</td>" .
+                            "<td>" . $row_e['empates'] . "</td>" .
+                            "<td>" . $row_e['g_marcados'] . "</td>" .
+                            "<td>" . $row_e['g_sofridos'] . "</td>" .
                             "</tr>";
                     }
                     ?>
@@ -136,13 +149,11 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
                             "<td>" . $row_j['idade'] . "</td>" .
                             "<td>" . $row_j['peso'] . "</td>" .
                             "<td>" . $eq_jogad['nome'] . "</td>" .
-
                             "</tr>";
                     }
                     ?>
                 </table>
             </div>
-
         </div>
 
         <div class="tabela">
@@ -154,7 +165,6 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
                         <th>Data</th>
                         <th>Resultado</th>
                         <th>Jornada</th>
-
                     </tr>
                     <?php
                     for ($i = 0; $i < $numjogos; $i++) {
@@ -208,14 +218,15 @@ $golo_jogad = pg_query($conn, "select jogador.nome from  jogador, golo where jog
 
                     </tr>
                     <?php
+
                     for ($i = 0; $i < $numgolos; $i++) {
-                        $row_g = pg_fetch_assoc($result_golo);
                         $g_jogador = pg_fetch_array($golo_jogad);
+                        $row_g = pg_fetch_assoc($result_golo);
                         echo "<tr>" .
                             "<td>" . $row_g['id'] . "</td>" .
                             "<td>" . $row_g['minuto']."</td>" .
-                           // "<td>" .$g_jogador['nome']. "</td>" .
-                            "<td>" .$row_g['jogador_id']. "</td>" .
+                            "<td>" .$g_jogador['nome'].$row_g['jogador_id']. "</td>" .
+                           // "<td>" .$row_g['jogador_id']. "</td>" .
                             "<td>" . $row_g['jogo_id'] . "</td>" .
                             "</tr>";
                     }

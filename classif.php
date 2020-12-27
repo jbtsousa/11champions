@@ -28,29 +28,132 @@
 </navbar>
 
 <main>
-    <div>
-        <?php
-        //para aceder à base de dados
-        $str = "host=localhost port=5432 dbname=11champions user=postgres password=postgres";
-        $conn = pg_connect($str) or die("Erro na ligação");
-        $result_equipa = pg_query($conn, 'select * from equipa order by pontuacao desc') or die;
-        $numequipa = pg_affected_rows($result_equipa);
-        ?>
-    </div>
 
-    <div>
         <div id="ordena">
-            <form method='get' action='classif_order.php'>
-                <label  for='ordenar'> Ordenar por:  </label>
-                <select name='ordenar'>";
-                    <option value='pont'> Pontuação </option>";
-                    <option value='num_jogos'>NºJogos Efectuados </option>";
+            <form method='get' action='classif.php'>
+                <label  for='ordenar'>Ordenar por:</label>
+                <select name='ordenar_a'>
+                    <option selected disabled>Nome</option>
+                    <option value='asc'>A-Z</option>
+                    <option value='desc'>Z-A</option>
+                </select>
 
+                <select name='ordenar_j'>
+                    <option selected disabled>Jogos Efectuados</option>
+                    <option value='asc'>Ascendente</option>
+                    <option value='desc'>Descendente</option>
+                </select>
+                <select name='ordenar_v'>
+                    <option selected disabled>Vitórias</option>
+                    <option value='asc'>Ascendente</option>
+                    <option value='desc'>Descendente</option>
+                </select>
+                <select name='ordenar_d'>
+                    <option selected disabled>Derrotas</option>
+                    <option value='asc'>Ascendente</option>
+                    <option value='desc'>Descendente</option>
+                </select>
+                <select name='ordenar_e'>
+                    <option selected disabled>Empates</option>
+                    <option value='asc'>Ascendente</option>
+                    <option value='desc'>Descendente</option>
+                </select>
+                <select name='ordenar_gm'>
+                    <option selected disabled>Golos Marcados</option>
+                    <option value='asc'>Ascendente</option>
+                    <option value='desc'>Descendente</option>
+                </select>
+                <select name='ordenar_gs'>
+                    <option selected disabled>Golos Sofridos</option>
+                    <option value='asc'>Ascendente</option>
+                    <option value='desc'>Descendente</option>
+                </select>
+                <select name='ordenar_p'>
+                    <option selected disabled>Pontuação</option>
+                    <option value='asc'>Ascendente</option>
+                    <option value='desc'>Descendente</option>
                 </select>
                 <p/>
                 <input id="escolhe_equipa"  type="submit" value="Escolher"/>
             </form>
+
+        <?php
+        $str = "host=localhost port=5432 dbname=11champions user=postgres password=postgres";
+        $conn = pg_connect($str) or die("Erro na ligação");
+        $result_equipa = pg_query($conn, 'select * from equipa ') or die;
+        //filtros ordenar
+        switch($_GET['ordenar_a']){
+            case 'asc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by nome asc') or die;
+                break;
+            case 'desc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by nome desc') or die;
+                break;
+        }
+        switch($_GET['ordenar_j'])  {
+            case 'asc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by num_jogos_efect asc') or die;
+                break;
+            case'desc':
+                $result_equioa = pg_query($conn, 'select * from equipa order by num_jogos_efect desc') or die;
+                break;
+        }
+        switch($_GET['ordenar_v'])  {
+            case 'asc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by vitorias asc') or die;
+                break;
+            case'desc':
+                $result_equioa = pg_query($conn, 'select * from equipa order by vitorias desc') or die;
+                break;
+        }
+        switch($_GET['ordenar_d'])  {
+            case 'asc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by derrotas asc') or die;
+                break;
+            case'desc':
+                $result_equioa = pg_query($conn, 'select * from equipa order by derrotas desc') or die;
+                break;
+        }
+        switch($_GET['ordenar_e'])  {
+            case 'asc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by empates asc') or die;
+                break;
+            case'desc':
+                $result_equioa = pg_query($conn, 'select * from equipa order by empates desc') or die;
+                break;
+        }
+        switch($_GET['ordenar_gm'])  {
+            case 'asc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by g_marcados asc') or die;
+                break;
+            case'desc':
+                $result_equioa = pg_query($conn, 'select * from equipa order by g_marcados desc') or die;
+                break;
+        }
+        switch($_GET['ordenar_gs'])  {
+            case 'asc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by g_sofridos asc') or die;
+                break;
+            case'desc':
+                $result_equioa = pg_query($conn, 'select * from equipa order by g_sofridos desc') or die;
+                break;
+        }
+        switch($_GET['ordenar_p']){
+            case 'asc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by pontuacao asc') or die;
+                break;
+            case 'desc':
+                $result_equipa = pg_query($conn, 'select * from equipa order by pontuacao desc') or die;
+                break;
+        }
+
+        $numequipa = pg_affected_rows($result_equipa);
+        ?>
         </div>
+
+
+    <div>
+
         <div id="tabela">
             <table class="classifica">
                 <tr>
@@ -67,62 +170,15 @@
                 <?php
                 for ($i = 0;$i < $numequipa;$i++) {
                     $row_e = pg_fetch_assoc($result_equipa);
-                    $equipa=$i+1;
-
-                    //calcula numero de jogos efctuados
-                    $jogos_visitado=pg_query($conn, "SELECT COUNT(equipa1_id) FROM jogos WHERE equipa1_id='$equipa'and equipa1_golos IS NOT NULL") or die;
-                    $jogos_visitante=pg_query($conn, "SELECT COUNT(equipa2_id) FROM jogos WHERE equipa2_id='$equipa' and equipa1_golos IS NOT NULL") or die;
-                    $num_visitado = pg_fetch_array($jogos_visitado);
-                    $num_visitante = pg_fetch_array($jogos_visitante);
-                    $tot_jogos_eq= $num_visitado['count'] + $num_visitante['count'];
-
-
-                    //calcula vitórias
-                    $vence_visitado=pg_query($conn, "select * from jogos where equipa1_golos>equipa2_golos and equipa1_id='$equipa'") or die;
-                    $vence_visitante=pg_query($conn, "select * from jogos where equipa1_golos<equipa2_golos and equipa2_id='$equipa'") or die;
-                    $tot_vitorias_eq=pg_affected_rows($vence_visitado) + pg_affected_rows($vence_visitante) ;
-
-                    //calcula derrotas
-                    $perde_visitado=pg_query($conn, "select * from jogos where equipa1_golos<equipa2_golos and equipa1_id='$equipa'") or die;
-                    $perde_visitante=pg_query($conn, "select * from jogos where equipa1_golos>equipa2_golos and equipa2_id='$equipa'") or die;
-                    $tot_derrotas_eq=pg_affected_rows($perde_visitado) + pg_affected_rows($perde_visitante) ;
-
-                    //calcula empates
-                    $empate_visitado=pg_query($conn, "select * from jogos where equipa1_golos=equipa2_golos and equipa1_id='$equipa'") or die;
-                    $empate_visitante=pg_query($conn, "select * from jogos where equipa1_golos=equipa2_golos and equipa2_id='$equipa'") or die;
-                    $tot_empates_eq=pg_affected_rows($empate_visitado) + pg_affected_rows($empate_visitante) ;
-
-                    //calcula golos marcados
-                    $golos_visitado=pg_query($conn, "SELECT SUM(equipa1_golos) FROM jogos where equipa1_id='$equipa'") or die;
-                    $golos_visitante=pg_query($conn, "SELECT SUM(equipa2_golos) FROM jogos where equipa2_id='$equipa'") or die;
-                    $g_visitado = pg_fetch_array($golos_visitado);
-                    $g_visitante = pg_fetch_array($golos_visitante);
-                    $tot_golos_eq= $g_visitado['sum'] + $g_visitante['sum'];
-
-                    //calcula golos sofridos
-                    $sofridos_visitado=pg_query($conn, "SELECT SUM(equipa2_golos) FROM jogos where equipa1_id='$equipa'") or die;
-                    $sofridos_visitante=pg_query($conn, "SELECT SUM(equipa1_golos) FROM jogos where equipa2_id='$equipa'") or die;
-                    $s_visitado = pg_fetch_array($sofridos_visitado);
-                    $s_visitante = pg_fetch_array($sofridos_visitante);
-                    $tot_golos_sof= $s_visitado['sum'] + $s_visitante['sum'];
-
-                    //calcula pontuação
-                    $pont=($tot_vitorias_eq*5) + $tot_empates_eq;
-
-                    //adicionar jogos efectuados e pontuação à tabela equipa
-                    $update_efect = pg_query($conn, "update equipa set num_jogos_efect='$tot_jogos_eq' where id='$equipa'") or die;
-                    $update_pont = pg_query($conn, "update equipa set pontuacao='$pont'where id='$equipa'") or die;
-                    $result2 = pg_query($conn, "select * from equipa") or die;
-
                     echo
                     "<tr>"
                     ."<td>" . $row_e['nome'] . "</td>"
                     ."<td>" . $row_e['num_jogos_efect']. "</td>"
-                    ."<td>" .$tot_vitorias_eq.  "</td>"
-                    ."<td>" . $tot_derrotas_eq. "</td>"
-                    ."<td>" . $tot_empates_eq. "</td>"
-                    ."<td>" . $tot_golos_eq. "</td>"
-                    ."<td>" .$tot_golos_sof.  "</td>"
+                    ."<td>" .$row_e['vitorias'].  "</td>"
+                    ."<td>" . $row_e['derrotas']. "</td>"
+                    ."<td>" . $row_e['empates']. "</td>"
+                    ."<td>" . $row_e['g_marcados']. "</td>"
+                    ."<td>" .$row_e['g_sofridos'].  "</td>"
                     ."<td>" . $row_e['pontuacao']. "</td>"
                     ."</tr>";
                 }

@@ -26,8 +26,6 @@ $conn = pg_connect($str) or die("Erro na ligação");
 //para o todos os jogadors
 $result_jog = pg_query($conn,"select * from jogos") or die;
 $numjogos = pg_affected_rows($result_jog);
-
-
 ?>
 
 <main>
@@ -45,7 +43,6 @@ $numjogos = pg_affected_rows($result_jog);
                 $nump=pg_affected_rows($result_jornadap);
 
             for ($i=0; $i<$nump; $i++){
-
                     $row_jornadap=pg_fetch_assoc($result_jornadap);
                     $eq_1=pg_fetch_assoc($equipa1);
                     $eq_2=pg_fetch_assoc($equipa2);

@@ -1,4 +1,6 @@
-
+body{
+    line-height: 115%;
+}
 .escolhe_equipa{
     margin: 2vh 0;
     display: flex;
@@ -27,6 +29,10 @@
     color: var(--color-darkblue);
     padding: 5%;
 }
+.info_jogador p{
+    color:var(--color-darkblue);
+    padding-bottom: 3%;
+}
 #jogadores p , #equipa_escolhida p, label{
     font-size: 1.3em;
 }
@@ -38,7 +44,6 @@ input{
     margin-top: 3%;
     font-size: 1.1em;
     padding: 2% 10% ;
-
 }
 
 .info_jogador{
