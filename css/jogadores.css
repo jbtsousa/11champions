@@ -36,6 +36,21 @@ body{
 #jogadores p , #equipa_escolhida p, label{
     font-size: 1.3em;
 }
+.icon_jog{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.n_camisola{
+    font-size: 1.3em;
+    position: absolute;
+    color: white;
+    align-self: center;
+    padding-top: 3.5%;
+}
+
+
 select{
     margin: 4% 0;
     font-size: 1.1em;

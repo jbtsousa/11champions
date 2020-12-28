@@ -1,15 +1,72 @@
-#equipas p {
+body{
+    line-height: 115%;
+}
+.escolhe_equipa{
+    margin: 2vh 0;
+    display: flex;
+}
+.but_todos , .but_equipas{
+    margin-right:2vw; ;
+}
+#jogadores{
+    padding:2vh 0 ;
+
+}
+.grid {
+    padding: 2vh 0;
+    display: grid;
+    grid-template-columns: repeat(6, 15%);
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+}
+.jogador {
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-lightblue);
+    color: var(--color-darkblue);
+    padding: 5%;
+}
+.info_jogador p{
+    color:var(--color-darkblue);
+    padding-bottom: 3%;
+    font-size: 1.2em;
+}
+#jogadores p , #equipa_escolhida p, label{
     font-size: 1.3em;
 }
-.equipa p{
-    margin-bottom: 2%;
+.icon_jog{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
-main{
-    line-height: 120%;
+
+.n_camisola{
+    font-size: 1.3em;
+    position: absolute;
+    color: white;
+    align-self: center;
+    padding-top: 3.5%;
 }
-.grid{
-    margin-top: 1%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    row-gap: 25px;
+
+select{
+    margin: 4% 0;
+    font-size: 1.1em;
 }
+input{
+    margin-top: 3%;
+    font-size: 1.1em;
+    padding: 2% 10% ;
+}
+
+.info_jogador{
+    text-align: center;
+    padding-top: 2vh;
+}
+#equipa label{
+    color: white;
+}
+
+

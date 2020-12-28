@@ -58,11 +58,13 @@
                     <option value='asc'>Ascendente</option>
                     <option value='desc'>Descendente</option>
                 </select>
+
                 <select name='ordenar_gm'>
                     <option selected disabled>Golos Marcados</option>
                     <option value='asc'>Ascendente</option>
                     <option value='desc'>Descendente</option>
                 </select>
+
                 <select name='ordenar_gs'>
                     <option selected disabled>Golos Sofridos</option>
                     <option value='asc'>Ascendente</option>
@@ -81,6 +83,7 @@
         $str = "host=localhost port=5432 dbname=11champions user=postgres password=postgres";
         $conn = pg_connect($str) or die("Erro na ligação");
         $result_equipa = pg_query($conn, 'select * from equipa ') or die;
+
         //filtros ordenar
         switch($_GET['ordenar_a']){
             case 'asc':

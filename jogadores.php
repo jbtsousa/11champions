@@ -52,66 +52,29 @@
     <div class="escolhe_equipa">
         <div class="but_equipas">
         <form method='get' action='jogadores.php'>
-            <label  for='equipas'> Escolha uma equipa: <br> </label>
-            <select name='equipa_escolhida'>";
-                <?php
-                for ($j=0; $j<$numequipa; $j++){
-                    //tabela equipa
-                    $row_e=pg_fetch_assoc($result_equipa);
-                    $variavelID= $j+1;
-                    //vai à tabela equipa buscar o nome da equipa
-                    $nomeequipa=$row_e['nome'];
-                    //vai à tabela equipa buscar o id da equipa
-                    $idequipa= $row_e['id'];
-                    //cada opçao vai mostrar o nome e id equipa
-                    print "<option value=\"$variavelID\"> $nomeequipa </option>";
-                }
-                ?>
-            </select>
-            <p/>
-            <input id="escolhe_equipa"  type="submit" value="Escolher"/>
+                <label  for='ordenar'> Ordenar por </label>
+                    <select name='ordenar_a'>
+                        <option selected disabled>Nome</option>
+                        <option value='asc'>A-Z</option>
+                        <option value='desc'>Z-A</option>
+                    </select>
+
+                    <select name='ordenar_p'>
+                        <option selected disabled>Peso</option>
+                        <option value='asc'>Ascendente</option>
+                        <option value='desc'>Descendente</option>
+                    </select>
+
+                    <select name='ordenar_p'>
+                        <option selected disabled>Nº Golos</option>
+                        <option value='asc'>Ascendente</option>
+                        <option value='desc'>Descendente</option>
+                    </select>
+
+            <input id="ordenar"  type="submit" value="Submeter"/>
+
         </form>
         </div>
-
-    </div>
-
-
-    <div id="equipa_escolhida">
-
-        <?php
-        if (isset($_GET['equipa_escolhida']) )
-        {
-            //vai buscar o id da equipa escolhida
-            $equipa_esc = $_GET['equipa_escolhida'];
-            //query para a linha da equipa escolhida
-            $equipa = pg_query($conn, "select * from equipa where id=$equipa_esc") or die;
-            $equipa = pg_fetch_assoc($equipa);
-            //vai a essa tabela buscar o nome da equipa
-            echo "<p> Jogadores do/a " . $equipa['nome'] .":" ."</p>" ;
-
-
-            echo "<div class='grid'>";
-            //vai a tabela jogador, e percorre todos os jogadores
-            for ($i=0; $i<$numjog; $i++){
-                $row_j=pg_fetch_assoc($result_jog2);
-                // se o id da equipa a que o jogador pertence for igual ao id da equipa escolhida
-                if($equipa_esc == $row_j['equipa_id']) {
-                    //cria o rectangulozinho com a info do jogador
-                    echo
-                        "<div class='jogador'>"
-                        ."<img src='css/images/icon.png' >"
-                            ."<div class='info_jogador'>"
-                            . "<p>".$row_j['nome'] . "</p>"
-                            . $row_j['idade'] . ' anos' . "<br/>"
-                            .' Camisola nº' . $row_j['n_camisola'] .  "<br/>"
-                            . $row_j['peso'] . 'kg' . "<br/>"
-                            . "</div>"
-                        . "</div>";
-                }
-            }
-            echo "</div >";
-        }
-        ?>
     </div>
 
     <div id="jogadores">
@@ -132,49 +95,24 @@
                 $row_j=pg_fetch_assoc($result_jog);
                 echo
                     "<div class='jogador'>"
-                    ."<img src='css/images/icon.png' >"
-                    ."<div class='info_jogador'>"
-                    . "<p>".$row_j['nome'] . "</p>"
-                    . $row_j['idade'] . ' anos' . "<br/>"
-                    .' Camisola nº' . $row_j['n_camisola'] .  "<br/>"
-                    . $row_j['peso'] . 'kg' . "<br/>"
-                    .'Nº Golos: '.$num_golos['count']
-                    . "</div>"
+                        ."<div class='icon_jog'>"
+                            ."<img class='icon' src='css/images/icon.png' >"
+                            ."<div class='n_camisola'>". $row_j['n_camisola'] ."</div>"
+                        ."</div>"
+                        ."<div class='info_jogador'>"
+                            . "<p>".$row_j['nome'] . "</p>"
+                            . $row_j['idade'] . ' anos' . "<br/>"
+                            //.' Camisola nº' . $row_j['n_camisola'] .  "<br/>"
+                            . $row_j['peso'] . 'kg' . "<br/>"
+                            .'Nº Golos: '.$num_golos['count']
+                        . "</div>"
                     . "</div>";
             }
             ?>
 
         </div>
     </div>
-
-
-
 </main>
-
-<!--<script>
-
-    let equipa= document.getElementById("equipa_escolhida");
-    let todos= document.getElementById("jogadores");
-
-    function mostraEquipa() {
-        document.getElementById("mytitle").style.color = "#ff0000";
-        if (todos.style.display === "block"){
-            todos.style.display = "none";
-            equipa.style.display = "block";
-        }
-    }
-
-    function mostraTodos() {
-        if (equipa.style.display === "block"){
-            equipa.style.display = "none";
-            todos.style.display = "block";
-        }
-
-    }
-
-</script>-->
-
-
 </body>
 </html>
 

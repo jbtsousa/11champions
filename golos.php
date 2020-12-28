@@ -1,4 +1,4 @@
-//adiciona à tabela golo os golos da tabela jogos
+//calcula total de golos de cada jogo e adiciona à tabela golo os golos da tabela jogos
 <?php
 $str = "host=localhost port=5432 dbname=11champions user=postgres password=postgres";
 $conn = pg_connect($str) or die("Erro na ligação");
