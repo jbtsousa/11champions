@@ -2,8 +2,12 @@
 
 //adicionar jogo
     $ndata = $_GET['new_date'];
-    $neq1 = $_GET['new_eq1'];
-    $neq2 = $_GET['new_eq2'];
+if (isset($_GET['equipa_escolhida1']) ){
+    $neq1 = $_GET['equipa_escolhida1'];
+}
+if (isset($_GET['equipa_escolhida2']) ){
+    $neq2 = $_GET['equipa_escolhida2'];
+}
     $ngolos1 = $_GET['new_golos1'];
     $ngolos2 = $_GET['new_golos2'];
     $njornada = $_GET['new_jornada'];

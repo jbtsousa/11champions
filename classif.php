@@ -20,9 +20,15 @@
         <a href="classif.php">
             <li>CLASSIFICAÇÕES</li>
         </a>
-        <a href="calendario.php">
-            <li>CALENDÁRIO</li>
-        </a>
+        <div class="dropdown">
+            <button class="dropbtn">CALENDÁRIO
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="calendario_passados.php">Jogos Passados</a>
+                <a href="calendario_futuros.php">Jogos Futuros</a>
+            </div>
+        </div>
 
     </ul>
 </navbar>
@@ -75,8 +81,12 @@
                     <option value='asc'>Ascendente</option>
                     <option value='desc'>Descendente</option>
                 </select>
-                <p/>
-                <input id="escolhe_equipa"  type="submit" value="Escolher"/>
+
+                <input id="escolhe_equipa"  type="submit" value="Submeter"/>
+            </form>
+
+          <form action="classif.php" method="get">
+               <input name="search" type="search" autofocus> <input type="submit" name="button">
             </form>
 
         <?php
@@ -150,7 +160,13 @@
                 break;
         }
 
-        $numequipa = pg_affected_rows($result_equipa);
+        if( isset ($_GET['search'])) {
+            $search = $_GET['search'];
+            $result_equipa = pg_query("select * from equipa where nome like '%{$search}%' ") or die;
+        }
+       $numequipa = pg_affected_rows($result_equipa);
+
+
         ?>
         </div>
 
@@ -161,12 +177,12 @@
             <table class="classifica">
                 <tr>
                     <th>Nome</th>
-                    <th>Nº Jogos</br>Efectuados</th>
+                    <th>Nº Jogos Efectuados</th>
                     <th>Vitórias</th>
                     <th>Derrotas</th>
                     <th>Empates</th>
-                    <th>Golos</br>Marcados</th>
-                    <th>Golos</br>Sofridos</th>
+                    <th>Golos Marcados</th>
+                    <th>Golos Sofridos</th>
                     <th>Pontuação</th>
                 </tr>
 

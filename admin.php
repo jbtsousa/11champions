@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/geral.css">
     <link rel="stylesheet" href="css/admin.css">
-    <title>11Champions</title>
+    <title>11Champions-Admin</title>
 
 </head>
 <body>
@@ -33,10 +33,10 @@ $equipa_jogad = pg_query($conn, "select equipa.nome from equipa, jogador where e
 
 $numjogad = pg_affected_rows($result_jogad);
 //equipas
-$result_equipas = pg_query($conn, "select * from equipa") or die;
+$result_equipas = pg_query($conn, "select * from equipa order by id") or die;
 $numequipas = pg_affected_rows($result_equipas);
 //jogos
-$result_jogos = pg_query($conn, "select * from jogos order by data") or die;
+$result_jogos = pg_query($conn, "select * from jogos order by id") or die;
 $equipa1 = pg_query($conn, "select equipa.nome from equipa, jogos where equipa.id=jogos.equipa1_id; ") or die;
 $equipa2 = pg_query($conn, "select equipa.nome from equipa, jogos where equipa.id=jogos.equipa2_id; ") or die;
 $numjogos = pg_affected_rows($result_jogos);
@@ -186,9 +186,40 @@ $golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where joga
                     <form method="get" action="admin-add-jogo.php">
                         <h2>Adicionar novo Jogo</h2>
                         Data: <input name="new_date" type="date"/> <br/>
-                        ID Equipa 1:<input name="new_eq1" type="number"/> <br/>
-                        ID Equipa 2:<input name="new_eq2" type="number"/> <br/>
-                        Golos Equipa 1: <input name="new_golos1" type="text"/> <br/>
+
+                        Equipa 1:<select name="equipa_escolhida1">
+                            <option selected disabled>Nome</option>
+                            <?php
+                            for ($k=0; $k<$numequipas; $k++){
+                                //tabela equipa
+                                $row_eq=pg_fetch_assoc($result_equipas);
+                                $equipaID1= $k+1;
+                                //vai à tabela equipa buscar o nome da equipa
+                                $equipa = pg_query($conn, "select * from equipa where id=$equipaID1") or die;
+                                $equipa = pg_fetch_assoc($equipa);
+                                $nome=$equipa['nome'];
+                                //cada opçao vai mostrar o nome da equipa
+                                print "<option value=\"$equipaID1\"> $nome </option> ";
+                            }
+                            ?>
+                                </select>
+                       Equipa 2: <select name="equipa_escolhida2">
+                            <option selected disabled>Nome</option>
+                            <?php
+                            for ($j=0; $j<$numequipas; $j++){
+                                //tabela equipa
+                                $row_e=pg_fetch_assoc($result_equipas);
+                                $equipaID2= $j+1;
+                                //vai à tabela equipa buscar o nome da equipa
+                                $equipa = pg_query($conn, "select * from equipa where id=$equipaID2") or die;
+                                $equipa = pg_fetch_assoc($equipa);
+                                $nome=$equipa['nome'];
+                                //cada opçao vai mostrar o nome da equipa
+                                print "<option value=\"$equipaID2\"> $nome </option> <br/>";
+                            }
+                            ?>
+                        </select>
+                        <br/>Golos Equipa 1: <input name="new_golos1" type="text"/> <br/>
                         Golos Equipa 2: <input name="new_golos2" type="text"/> <br/>
                         Jornada: <input name="new_jornada" type="number"/> <br/>
                         <input type="submit" value="Adicionar"/>
@@ -225,8 +256,7 @@ $golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where joga
                         echo "<tr>" .
                             "<td>" . $row_g['id'] . "</td>" .
                             "<td>" . $row_g['minuto']."</td>" .
-                            "<td>" .$g_jogador['nome'].$row_g['jogador_id']. "</td>" .
-                           // "<td>" .$row_g['jogador_id']. "</td>" .
+                            "<td>" .$g_jogador['nome']. "</td>" .
                             "<td>" . $row_g['jogo_id'] . "</td>" .
                             "</tr>";
                     }

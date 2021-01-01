@@ -46,7 +46,7 @@ body{
 .n_camisola{
     font-size: 1.3em;
     position: absolute;
-    color: white;
+    color: var(--color-lightblue);
     align-self: center;
     padding-top: 3.5%;
 }
