@@ -12,7 +12,7 @@ div{
     margin-bottom: 1%;
 }
 #passados, #futuros{
-    width:95%;
+    width:100%;
     display: block;
     background-color: var(--color-lightblue);
     color: #020532;
@@ -24,14 +24,27 @@ div{
     font-weight: bold;
     font-size: 1.2em;
 }
-#passados p, #futuros p{
-    font-weight: bold;
-    padding-top: 3%;
+.game{
+    display: block;
 }
 .jornadas_grid{
+    width: 100%;
     padding: 2vh 0;
     display: grid;
-    grid-template-columns: repeat(3, 40%);
+    grid-template-columns: repeat(3,32%);
     grid-row-gap: 20px;
     grid-column-gap: 20px;
+
+}
+.jornada{
+    background-color: var(--color-darkblue);
+    color:white;
+    border-radius: 12px;
+    padding-left: 5%;
+    padding-bottom: 5%;
+    font-size: 1.1em;
+}
+.minutos{
+font-size: 0.8em;
+    line-height: 150%;
 }

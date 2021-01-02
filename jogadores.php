@@ -9,29 +9,6 @@
 </head>
 <body>
 
-<div>
-    <?php
-    //para aceder à base de dados
-    $str= "host=localhost port=5432 dbname=11champions user=postgres password=postgres";
-    $conn = pg_connect($str) or die("Erro na ligação");
-    //para o todos os jogadors
-    $result_jog = pg_query($conn,"select * from jogador") or die;
-    //para o todos os jogadores de uma certa equipa
-    $result_jog2 = pg_query($conn,"select * from jogador") or die;
-
-    //query que mostra a tabela equipa
-    $result_equipa = pg_query($conn, 'select * from equipa') or die;
-
-    //determina numero de jogadores e de equipas (numero de linhas da tabela)
-    $numjog = pg_affected_rows($result_jog);
-    $numjog2 = pg_affected_rows($result_jog2);
-
-    $numequipa = pg_affected_rows($result_equipa);
-
-    ?>
-</div>
-
-
 <navbar>
     <a href="index.php"><img src="css/images/logo.svg"></a>
 
@@ -51,20 +28,64 @@
     </ul>
 </navbar>
 <main>
+    <?php $str= "host=localhost port=5432 dbname=11champions user=postgres password=postgres";
+    $conn = pg_connect($str) or die("Erro na ligação"); ?>
 
-    <div>
+    <div id="top">
+        <p class="titulo">Top 5 Marcadores</p>
+        <?php
+        $golos_jogad= pg_query($conn, "select jogador.nome, jogador.id, jogador.equipa_id,
+        COUNT(golo.jogador_id) as num_golos  from jogador, golo 
+        where jogador.id=golo.jogador_id
+        group by jogador.nome, jogador.id, jogador.equipa_id
+        order by num_golos desc") or die;
+
+        echo "<div id='grid_top'>";
+        for ($j=0;$j<5;$j++) {
+
+            $golos=pg_fetch_array($golos_jogad);
+            $id_jogador= $golos['id'];
+            $jogador = pg_query($conn,"select * from jogador where id='$id_jogador'") or die;
+            $equipaid_jogador= $golos['equipa_id'];
+            $equipa_j= pg_query($conn,"select equipa.nome from equipa where id =$equipaid_jogador") or die;
+
+            $rowj = pg_fetch_assoc($jogador);
+            $rowe=pg_fetch_assoc($equipa_j);
+
+
+            echo
+                "<div class='jogador'>"
+                . "<div class='icon_jog'>"
+                . "<img class='icon' src='css/images/icon.png' >"
+                . "<div class='n_camisola'>" . $rowj['n_camisola'] . "</div>"
+                . "</div>"
+                . "<div class='info_jogador'>"
+                . "<p>" . $golos['nome'] . "</p>"
+                . $rowe['nome']. "<br/>"
+                . 'Nº Golos: ' . $golos['num_golos']
+                . "</div>"
+                . "</div>";
+        }
+        echo "</div>";
+        ?>
 
     </div>
-
+    <div id="todos">
+    <p class="titulo">Jogadores da Liga</p>
 
     <div class="escolhe_equipa">
-        <div class="but_equipas">
         <form method='get' action='jogadores.php'>
                 <label  for='ordenar'> Ordenar por </label>
-                    <select name='ordenar_a'>
+                    <select name='ordenar_n'>
                         <option selected disabled>Nome</option>
                         <option value='asc'>A-Z</option>
                         <option value='desc'>Z-A</option>
+                    </select>
+
+                    <select name='ordenar_i'>
+                        <option selected disabled>Idade</option>
+                        <option value='asc'>Ascendente</option>
+                        <option value='desc'>Descendente</option>
                     </select>
 
                     <select name='ordenar_p'>
@@ -73,31 +94,61 @@
                         <option value='desc'>Descendente</option>
                     </select>
 
-                    <select name='ordenar_p'>
-                        <option selected disabled>Nº Golos</option>
-                        <option value='asc'>Ascendente</option>
-                        <option value='desc'>Descendente</option>
-                    </select>
-
             <input id="ordenar"  type="submit" value="Submeter"/>
-
         </form>
-        </div>
     </div>
+    <?php
+        //para aceder à base de dados
+
+        //para o todos os jogadors
+        $result_jog = pg_query($conn,"select * from jogador") or die;
+
+
+
+    //filtros ordenar
+    $action_n = isset($_GET['ordenar_n']) ? $_GET['ordenar_n'] : null;
+        switch($action_n){
+            case 'asc':
+                $result_jog = pg_query($conn, 'select * from jogador order by nome asc') or die;
+                break;
+            case 'desc':
+                $result_jog = pg_query($conn, 'select * from jogador order by nome desc') or die;
+                break;
+        }
+    $action_i = isset($_GET['ordenar_i']) ? $_GET['ordenar_i'] : null;
+    switch($action_i)  {
+            case 'asc':
+                $result_jog = pg_query($conn, 'select * from jogador order by idade asc') or die;
+                break;
+            case'desc':
+                $result_jog = pg_query($conn, 'select * from jogador order by idade desc') or die;
+                break;
+        }
+    $action_p = isset($_GET['ordenar_p']) ? $_GET['ordenar_p'] : null;
+    switch($action_p)  {
+            case 'asc':
+                $result_jog = pg_query($conn, 'select * from jogador order by peso asc') or die;
+                break;
+            case'desc':
+                $result_jog = pg_query($conn, 'select * from jogador order by peso desc') or die;
+                break;
+        }
+
+
+        $numjog = pg_affected_rows($result_jog);
+    ?>
 
     <div id="jogadores">
-        <p>Todos os jogadores:</p>
-        <?php
-        echo "(Número total de jogadores: " . $numjog .")";
 
-        ?>
-
+        <?php  echo "(Número total de jogadores: " . $numjog .")"; ?>
         <div class="grid">
             <?php
             for ($i=0; $i<$numjog; $i++){
                 //conta golos do jogador
                 $jogador=$i+1;
-                $golos_jogad= pg_query($conn, "SELECT COUNT (id) FROM golo WHERE jogador_id='$jogador';") or die;
+                $golos_jogad= pg_query($conn, "SELECT COUNT (golo.jogador_id) as num_golos FROM golo WHERE jogador_id='$jogador'") or die;
+
+
                 $num_golos=pg_fetch_array($golos_jogad);
 
                 $row_j=pg_fetch_assoc($result_jog);
@@ -110,15 +161,18 @@
                         ."<div class='info_jogador'>"
                             . "<p>".$row_j['nome'] . "</p>"
                             . $row_j['idade'] . ' anos' . "<br/>"
-                            //.' Camisola nº' . $row_j['n_camisola'] .  "<br/>"
                             . $row_j['peso'] . 'kg' . "<br/>"
-                            .'Nº Golos: '.$num_golos['count']
+                            .'Nº Golos: '.$num_golos['num_golos']
                         . "</div>"
                     . "</div>";
+
+
             }
+
             ?>
 
         </div>
+    </div>
     </div>
 </main>
 </body>

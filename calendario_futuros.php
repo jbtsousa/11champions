@@ -55,25 +55,24 @@ $numjogos = pg_affected_rows($result_jog);
         $row = pg_fetch_array($ult_f);
         $ultimo = $row['max'];
 
-        //corre todos as jornadas
         echo "<div class='jornadas_grid' >";
 
-        for ($j = $primeiro; $j < $ultimo ; $j++) {
-            $result_jornada = pg_query($conn, "select * from jogos where jornada='$j' order by id") or die;
-            $num = pg_affected_rows($result_jornada);
-            echo "<div class='jornadas_grid' >";
-            echo "<br>". "Jornada " . $j."</br>";
-            for ($i = 0; $i < $num; $i++) {
-                $row_jornadap = pg_fetch_assoc($result_jornada);
-                $eq_1=pg_fetch_assoc($equipa1);
-                $eq_2=pg_fetch_assoc($equipa2);
-                echo
-                    "<br/>".$row_jornadap['data']."<br/>"
-                    .$eq_1['nome']." ". $row_jornadap['equipa1_golos'] ."-". $row_jornadap['equipa2_golos'] ." ".$eq_2['nome'] . "<br/>"
-                ;
+            for ($j = $primeiro; $j < $ultimo ; $j++) {
+                $result_jornada = pg_query($conn, "select * from jogos where jornada='$j' order by id") or die;
+                $num = pg_affected_rows($result_jornada);
+                echo "<div class='jornada'>";
+                echo "<br>". "Jornada " . $j."</br>";
+                for ($i = 0; $i < $num; $i++) {
+                    $row_jornadap = pg_fetch_assoc($result_jornada);
+                    $eq_1=pg_fetch_assoc($equipa1);
+                    $eq_2=pg_fetch_assoc($equipa2);
+                    echo
+                        "<br/>".$row_jornadap['data']."<br/>"
+                        .$eq_1['nome']." ". $row_jornadap['equipa1_golos'] ."-". $row_jornadap['equipa2_golos'] ." ".$eq_2['nome'] . "<br/>"
+                    ;
+                }
+                echo "</div>";
             }
-            echo "</div>";
-        }
         echo "</div>";
         pg_close($conn);
 

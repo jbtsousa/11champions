@@ -48,6 +48,7 @@ html{
     font-family: 'Avenir', sans-serif;
     scroll-behavior: smooth;
 }
+
 /* colors */
 :root {
     --color-darkblue: #020532;

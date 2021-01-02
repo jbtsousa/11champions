@@ -8,10 +8,7 @@
 
 </head>
 <body>
-
-
 <navbar>
-
     <a href="index.php"><img src="css/images/logo.svg"></a>
 
     <div class="right">
@@ -268,8 +265,8 @@ $golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where joga
                     <form method="get" action="admin-edit-golo.php">
                         <h2>Editar Golo</h2>
                         ID do Golo: <input name="id_golo" type="number"/> <br/>
-                        Jogador: <input name="edit_jogador" type="text"/> <br/>
                         Minuto: <input name="edit_minuto" type="date"/> <br/>
+                        Jogador: <input name="edit_jogador" type="text"/> <br/>
                         <input type="submit" value="Adicionar"/>
                     </form>
 

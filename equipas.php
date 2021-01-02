@@ -36,7 +36,7 @@
     $result_jog2 = pg_query($conn,"select * from jogador") or die;
 
     //query que mostra a tabela equipa
-    $result_equipa = pg_query($conn, 'select * from equipa') or die;
+    $result_equipa = pg_query($conn, 'select * from equipa order by id') or die;
 
     //determina numero de jogadores e de equipas (numero de linhas da tabela)
     $numjog = pg_affected_rows($result_jog);
@@ -83,7 +83,7 @@
             //vai buscar o id da equipa escolhida
             $equipa_esc = $_GET['equipa_escolhida'];
             //query para a linha da equipa escolhida
-            $equipa = pg_query($conn, "select * from equipa where id=$equipa_esc") or die;
+            $equipa = pg_query($conn, "select * from equipa where id='$equipa_esc'") or die;
             $equipa = pg_fetch_assoc($equipa);
             //vai a essa tabela buscar o nome da equipa
             echo "<p> Jogadores do/a " . $equipa['nome'] .":" ."</p>" ;

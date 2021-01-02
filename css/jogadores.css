@@ -2,12 +2,10 @@ body{
     line-height: 115%;
 }
 .escolhe_equipa{
-    margin: 2vh 0;
+    margin: 0vh 0;
     display: flex;
 }
-.but_todos , .but_equipas{
-    margin-right:2vw; ;
-}
+
 #jogadores{
     padding:2vh 0 ;
 
@@ -18,6 +16,13 @@ body{
     grid-template-columns: repeat(6, 15%);
     grid-row-gap: 20px;
     grid-column-gap: 20px;
+}
+#grid_top{
+    padding: 2vh 0;
+    display: grid;
+    grid-template-columns: repeat(5, 18.5%);
+    grid-column-gap: 20px;
+    margin-bottom: 5%;
 }
 .jogador {
     border-radius: 8px;
@@ -33,8 +38,12 @@ body{
     color:var(--color-darkblue);
     padding-bottom: 3%;
 }
+.titulo{
+    font-size: 1.4em;
+    font-weight: bold;
+}
 #jogadores p , #equipa_escolhida p, label{
-    font-size: 1.3em;
+    font-size: 1em;
 }
 .icon_jog{
     display: flex;

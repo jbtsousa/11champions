@@ -38,7 +38,7 @@
         <div id="ordena">
             <form method='get' action='classif.php'>
                 <label  for='ordenar'>Ordenar por:</label>
-                <select name='ordenar_a'>
+                <select name='ordenar_n'>
                     <option selected disabled>Nome</option>
                     <option value='asc'>A-Z</option>
                     <option value='desc'>Z-A</option>
@@ -95,7 +95,8 @@
         $result_equipa = pg_query($conn, 'select * from equipa ') or die;
 
         //filtros ordenar
-        switch($_GET['ordenar_a']){
+        $action_n = isset($_GET['ordenar_n']) ? $_GET['ordenar_n'] : null;
+        switch($action_n){
             case 'asc':
                 $result_equipa = pg_query($conn, 'select * from equipa order by nome asc') or die;
                 break;
@@ -103,7 +104,8 @@
                 $result_equipa = pg_query($conn, 'select * from equipa order by nome desc') or die;
                 break;
         }
-        switch($_GET['ordenar_j'])  {
+        $action_j = isset($_GET['ordenar_j']) ? $_GET['ordenar_j'] : null;
+        switch($action_j)  {
             case 'asc':
                 $result_equipa = pg_query($conn, 'select * from equipa order by num_jogos_efect asc') or die;
                 break;
@@ -111,7 +113,8 @@
                 $result_equioa = pg_query($conn, 'select * from equipa order by num_jogos_efect desc') or die;
                 break;
         }
-        switch($_GET['ordenar_v'])  {
+        $action_v = isset($_GET['ordenar_v']) ? $_GET['ordenar_v'] : null;
+        switch($action_v)  {
             case 'asc':
                 $result_equipa = pg_query($conn, 'select * from equipa order by vitorias asc') or die;
                 break;
@@ -119,7 +122,8 @@
                 $result_equioa = pg_query($conn, 'select * from equipa order by vitorias desc') or die;
                 break;
         }
-        switch($_GET['ordenar_d'])  {
+        $action_d = isset($_GET['ordenar_d']) ? $_GET['ordenar_d'] : null;
+        switch($action_d)  {
             case 'asc':
                 $result_equipa = pg_query($conn, 'select * from equipa order by derrotas asc') or die;
                 break;
@@ -127,7 +131,8 @@
                 $result_equioa = pg_query($conn, 'select * from equipa order by derrotas desc') or die;
                 break;
         }
-        switch($_GET['ordenar_e'])  {
+        $action_e = isset($_GET['ordenar_e']) ? $_GET['ordenar_e'] : null;
+        switch($action_e)  {
             case 'asc':
                 $result_equipa = pg_query($conn, 'select * from equipa order by empates asc') or die;
                 break;
@@ -135,7 +140,8 @@
                 $result_equioa = pg_query($conn, 'select * from equipa order by empates desc') or die;
                 break;
         }
-        switch($_GET['ordenar_gm'])  {
+        $action_gm = isset($_GET['ordenar_gm']) ? $_GET['ordenar_gm'] : null;
+        switch($action_gm)  {
             case 'asc':
                 $result_equipa = pg_query($conn, 'select * from equipa order by g_marcados asc') or die;
                 break;
@@ -143,7 +149,8 @@
                 $result_equioa = pg_query($conn, 'select * from equipa order by g_marcados desc') or die;
                 break;
         }
-        switch($_GET['ordenar_gs'])  {
+        $action_gs = isset($_GET['ordenar_gs']) ? $_GET['ordenar_gs'] : null;
+        switch($action_gs)  {
             case 'asc':
                 $result_equipa = pg_query($conn, 'select * from equipa order by g_sofridos asc') or die;
                 break;
@@ -151,7 +158,8 @@
                 $result_equioa = pg_query($conn, 'select * from equipa order by g_sofridos desc') or die;
                 break;
         }
-        switch($_GET['ordenar_p']){
+        $action_n = isset($_GET['ordenar_p']) ? $_GET['ordenar_p'] : null;
+        switch($action_n){
             case 'asc':
                 $result_equipa = pg_query($conn, 'select * from equipa order by pontuacao asc') or die;
                 break;

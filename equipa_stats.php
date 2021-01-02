@@ -48,7 +48,7 @@ for ($i = 0; $i < $numequipa; $i++) {
 //calcula pontuação
     $pont = ($tot_vitorias_eq * 5) + $tot_empates_eq;
 
-//adicionar jogos efectuados e pontuação à tabela equipa
+//adiciona todas as estatisticas à tabela equipa
     $update_efect = pg_query($conn, "update equipa set num_jogos_efect='$tot_jogos_eq' where id='$equipa'") or die;
     $update_pont = pg_query($conn, "update equipa set pontuacao='$pont'where id='$equipa'") or die;
     $update_vit = pg_query($conn, "update equipa set vitorias='$tot_vitorias_eq'where id='$equipa'") or die;
