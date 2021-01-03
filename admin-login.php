@@ -12,13 +12,14 @@
 <main>
     <div class="center">
         <div class="form">
+            <h1>LOGIN</h1>
             <form method="post" action="admin-login.php">
 
                 <label> Inserir e-mail: <input type="email" name="mail"></label>
                 <br>
                 <label> Inserir password: <input type="password" name="pass"></label>
                 <br>
-                <input type="submit" name="submit" value="Submeter">
+                <input id="but" type="submit" name="submit" value="Entrar">
             </form>
         </div></div>
 

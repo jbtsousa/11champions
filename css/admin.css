@@ -13,6 +13,19 @@
     padding: 4%;
     color:#020532 ;
 }
+.form h1{
+    text-align: center;
+    margin-bottom: 6%;
+    color:var(--color-darkblue);
+}
+.form #but{
+    background-color:var(--color-darkblue) ;
+    color: white;
+    padding: 2% 4%;
+    width: 100%;
+    border-radius: 6px;
+    font-size: 1.1em;
+}
 label{
     display: flex;
     justify-content: space-between;
@@ -73,7 +86,7 @@ th{
     margin-top: 1%;
 
 }
-.edit{
+.edit, .delete{
     margin-top: 20%;
 }
 .right{

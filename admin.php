@@ -45,6 +45,10 @@ $result_golo = pg_query($conn, "select * from golo where jogador_id is not null 
 $numgolos = pg_affected_rows($result_golo);
 $golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where jogador.id=golo.jogador_id ") or die;
 
+$result_jogad_e = pg_query($conn, "select * from jogador order by nome asc") or die;
+$jogadores= pg_affected_rows($result_jogad_e);
+
+
 ?>
 
 <main>
@@ -118,7 +122,6 @@ $golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where joga
                         Nome: <input name="new_nomeeq" type="name"/> <br/>
                         <input type="submit" value="Adicionar"/>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -195,7 +198,7 @@ $golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where joga
                                 $equipa = pg_query($conn, "select * from equipa where id=$equipaID1") or die;
                                 $equipa = pg_fetch_assoc($equipa);
                                 $nome=$equipa['nome'];
-                                //cada opçao vai mostrar o nome da equipa
+                                //cada opçao vai mostrar o nome da equipa e guarda o valor do id
                                 print "<option value=\"$equipaID1\"> $nome </option> ";
                             }
                             ?>
@@ -248,12 +251,16 @@ $golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where joga
                     <?php
 
                     for ($i = 0; $i < $numgolos; $i++) {
-                        $g_jogador = pg_fetch_array($golo_jogad);
+
                         $row_g = pg_fetch_assoc($result_golo);
+                        $id= $row_g['jogador_id'];
+                        $nome_jog= pg_query("select jogador.nome  from golo,jogador where jogador.id= '$id'");
+                        $row_goloa=pg_fetch_assoc($nome_jog);
+
                         echo "<tr>" .
                             "<td>" . $row_g['id'] . "</td>" .
                             "<td>" . $row_g['minuto']."</td>" .
-                            "<td>" .$g_jogador['nome']. "</td>" .
+                            "<td>" .$row_goloa['nome']. "</td>" .
                             "<td>" . $row_g['jogo_id'] . "</td>" .
                             "</tr>";
                     }
@@ -266,11 +273,29 @@ $golo_jogad = pg_query($conn, "select jogador.nome from jogador, golo where joga
                         <h2>Editar Golo</h2>
                         ID do Golo: <input name="id_golo" type="number"/> <br/>
                         Minuto: <input name="edit_minuto" type="date"/> <br/>
-                        Jogador: <input name="edit_jogador" type="text"/> <br/>
+
+                        Jogador: <select name="edit_jogador">
+                            <option selected disabled>Nome</option>
+                            <?php
+                            for ($j=0; $j<$jogadores; $j++){
+                                //tabela equipa
+                                $row_j=pg_fetch_assoc($result_jogad_e);
+                                $jogadID= $j+1;
+                                //vai à tabela equipa buscar o nome da equipa
+                                $jogador = pg_query($conn, "select * from jogador where id=$jogadID") or die;
+                                $jog = pg_fetch_assoc($jogador);
+                                $jnome=$jog['nome'];
+                                //cada opçao vai mostrar o nome da equipa
+                                print "<option value=\"$jogadID\"> $jnome </option> <br/>";
+                            }
+                            ?>
+                        </select> <br/>
+
                         <input type="submit" value="Adicionar"/>
                     </form>
-
                 </div>
+
+
             </div>
         </div>
 

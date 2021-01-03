@@ -48,3 +48,8 @@ div{
 font-size: 0.8em;
     line-height: 150%;
 }
+
+p{
+    color:var(--color-darkblue);
+    padding-top: 2%;
+}

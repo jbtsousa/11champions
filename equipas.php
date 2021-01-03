@@ -43,9 +43,7 @@
     $numjog2 = pg_affected_rows($result_jog2);
 
     $numequipa = pg_affected_rows($result_equipa);
-
     ?>
-
 
 <div>
     <div id="equipas">
@@ -80,9 +78,9 @@
         <?php
         if (isset($_GET['equipa_escolhida']) )
         {
-            //vai buscar o id da equipa escolhida
+            //vai ao form de escolher equipa buscar o id da equipa escolhida
             $equipa_esc = $_GET['equipa_escolhida'];
-            //query para a linha da equipa escolhida
+            //query para a equipa escolhida
             $equipa = pg_query($conn, "select * from equipa where id='$equipa_esc'") or die;
             $equipa = pg_fetch_assoc($equipa);
             //vai a essa tabela buscar o nome da equipa
